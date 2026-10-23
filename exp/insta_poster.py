@@ -7,7 +7,7 @@ USERNAME = "orlume51"
 PASSWORD = "PKM9Ey$YbLUkTUH2uXx!"
 IMAGE_PATH = os.path.abspath("orlume_logo.png")
 CAPTION = "Hello from Orlume! 🌸✨"
-SESSION_DIR = "./session/ig_session"
+SESSION_DIR = "./sessions/ig_session"
 # =================================================
 
 

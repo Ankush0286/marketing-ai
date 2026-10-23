@@ -16,7 +16,7 @@ MODEL_NAME = "deepseek/deepseek-v4-flash-0731"
 
 IG_USERNAME = "orlume51"
 IG_PASSWORD = "PKM9Ey$YbLUkTUH2uXx!"  # Change your password after testing!
-SESSION_DIR = "./session/ig_session"
+SESSION_DIR = "./sessions/ig_session"
 # =================================================
 
 
@@ -315,5 +315,5 @@ async def run_instagram_task(task_prompt: str):
 
 
 if __name__ == "__main__":
-    PROMPT = "Find a AI influencer and send a dm saying hi to him"
+    PROMPT = "Find a 3 technical influencer that might promote an AI website builder"
     asyncio.run(run_instagram_task(PROMPT))

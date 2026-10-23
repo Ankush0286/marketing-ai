@@ -5,6 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "cryptography>=50.0.2",
+    "fastapi>=0.161.1",
+    "libsql>=0.1.11",
+    "libsql-client>=0.3.1",
     "playwright>=1.64.1",
     "pydantic-ai>=2.60.0",
+    "sqlalchemy>=2.1.6",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]

@@ -13,4 +13,5 @@ wheels/
 .env
 
 # Session files
-session
+sessions
+local_db
