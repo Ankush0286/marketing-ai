@@ -1,4 +1,5 @@
 from unittest.mock import MagicMock
+
 from app.db.proxy import LibSqlProxyConnection, LibSqlProxyCursor
 
 
@@ -7,10 +8,9 @@ def test_proxy_intercepts_create_function():
     mock_raw_conn = MagicMock()
     proxy = LibSqlProxyConnection(mock_raw_conn)
 
-    # SQLAlchemy calls this during SQLite initialization
-    result = proxy.create_function("custom_func", 1, lambda x: x)
+    # SQLAlchemy calls this during SQLite initialization (returns None)
+    proxy.create_function("custom_func", 1, lambda x: x)
 
-    assert result is None
     # Verify it was not forwarded as an invalid call to the underlying driver
     assert not hasattr(mock_raw_conn, "create_function") or not mock_raw_conn.create_function.called
 

@@ -1,13 +1,15 @@
-import libsql
 import logging
-from typing import Any
-from pathlib import Path
-from sqlalchemy import create_engine
 from collections.abc import Generator
+from pathlib import Path
+from typing import Any
+
+import libsql
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from .proxy import LibSqlProxyConnection
 from app.core.config import settings
+
+from .proxy import LibSqlProxyConnection
 
 logger = logging.getLogger(__name__)
 
@@ -100,9 +102,8 @@ def sync_replica() -> None:
     """
     try:
         with engine.connect() as conn:
-            # Access underlying DBAPI connection through SQLAlchemy's raw connection
-            dbapi_conn = conn.connection.dbapi_connection
-            if hasattr(dbapi_conn, "sync"):
+            dbapi_conn: Any = conn.connection.dbapi_connection
+            if dbapi_conn is not None and hasattr(dbapi_conn, "sync"):
                 dbapi_conn.sync()
                 logger.info("Turso replica sync completed successfully.")
             else:

@@ -5,20 +5,75 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.20.1",
     "cryptography>=50.0.2",
     "fastapi>=0.161.1",
     "libsql>=0.1.11",
     "libsql-client>=0.3.1",
+    "numpy>=2.5.4",
+    "opencv-python>=5.0.0.93",
+    "pillow>=13.0.0",
     "playwright>=1.64.1",
     "pydantic-ai>=2.60.0",
+    "rembg[cpu]>=2.0.86",
     "sqlalchemy>=2.1.6",
 ]
 
 [dependency-groups]
 dev = [
+    "filetree-cli>=0.1.0",
+    "mypy>=2.4.0",
     "pytest>=9.1.1",
+    "ruff>=0.17.3",
+    "vulture>=2.16",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 testpaths = ["tests"]
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "F",      # Pyflakes: syntax errors, undefined names
+    "E",      # Pycodestyle errors
+    "W",      # Pycodestyle warnings
+    "I",      # isort: clean import sorting
+    "UP",     # pyupgrade: modern Python 3.12 syntax
+    "B",      # flake8-bugbear: bug prevention
+    "SIM",    # flake8-simplify: code simplification
+]
+ignore = [
+    "E501",   # Line length
+    "UP046",  # Keep Pydantic Generic[T]
+    "UP042",  # Keep Enum inheritance pattern
+    "B008",   # FastAPI Depends in function defaults
+    "B904",   # Domain exceptions without 'from err'
+    "SIM105", # Standard try-except-pass blocks
+    "W291",   # Trailing spaces in AI prompt strings
+    "E712",   # SQLAlchemy Column == True filter clauses
+    "B023",   # Socket.IO event listener closures inside connection loops
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src"]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+explicit_package_bases = true
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
+disable_error_code = ["misc"]
+
+[tool.vulture]
+min_confidence = 80
+paths = ["src/app"]

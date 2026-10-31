@@ -1,10 +1,9 @@
-import sys
 import logging
-from pathlib import Path
+import sys
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 from app.core.config import settings
-
 
 LOGS_DIR = Path("storage/logs")
 

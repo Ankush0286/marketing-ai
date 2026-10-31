@@ -3,6 +3,7 @@ from sqlalchemy.orm import (
     declared_attr,
 )
 
+
 class Base(DeclarativeBase):
     """
     Base class for all SQLAlchemy declarative models.

@@ -1,13 +1,15 @@
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
+
 from sqlalchemy import DateTime
-from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
 
+
 def utc_now() -> datetime:
     """Return timezone-aware current UTC datetime."""
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class UUIDPrimaryKeyMixin:
@@ -46,4 +48,3 @@ class AuditBase(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     """
 
     __abstract__ = True
-    

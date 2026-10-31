@@ -38,8 +38,8 @@ class LibSqlProxyConnection:
     def create_function(
         self,
         name: str,
-        num_params: int,
-        func: Any,
+        _num_params: int,
+        _func: Any,
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -48,7 +48,6 @@ class LibSqlProxyConnection:
         libSQL does not support dynamic Python-side function registration.
         """
         logger.debug("Intercepted unsupported SQLite create_function: %s", name)
-        return None
 
     def cursor(self, *args: Any, **kwargs: Any) -> LibSqlProxyCursor:
         """Returns a wrapped cursor pointing back to this proxy connection."""

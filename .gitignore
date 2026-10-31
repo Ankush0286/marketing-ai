@@ -5,6 +5,9 @@ build/
 dist/
 wheels/
 *.egg-info
+.mypy_cache
+.pytest_cache
+.ruff_cache
 
 # Virtual environments
 .venv
@@ -13,5 +16,9 @@ wheels/
 .env
 
 # Session files
-sessions
-local_db
+storage/local_db/*.db
+storage/local_db/*.db-*
+storage/browser_sessions/
+storage/logs/
+
+index.html
