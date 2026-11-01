@@ -80,4 +80,3 @@ class BasePlatformAdapter(ABC):
     async def close(self) -> None:
         """Cleans up active browser contexts, sockets, or HTTP client sessions."""
         raise NotImplementedError
-    

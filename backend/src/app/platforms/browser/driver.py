@@ -76,6 +76,10 @@ STEALTH_INIT_SCRIPT = """
 async def apply_stealth_to_page(page: Page) -> None:
     """Applies client-side evasions to a single page."""
     await page.add_init_script(STEALTH_INIT_SCRIPT)
+    try:
+        await page.evaluate(STEALTH_INIT_SCRIPT)
+    except Exception:
+        pass
 
 
 async def create_stealth_context(
