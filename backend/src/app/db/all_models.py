@@ -1,6 +1,7 @@
 from app.db.base import Base
 from app.modules.accounts.models import ConnectedAccount
 from app.modules.campaigns.models import Campaign, ScheduledPost
+from app.modules.outreach.models import Lead, OutreachCampaign, OutreachMessage
 from app.modules.triggers.models import TriggerMatch, TriggerRule, WatchedHandle
 
 __all__ = [
@@ -11,4 +12,7 @@ __all__ = [
     "WatchedHandle",
     "TriggerRule",
     "TriggerMatch",
+    "Lead",
+    "OutreachCampaign",
+    "OutreachMessage",
 ]

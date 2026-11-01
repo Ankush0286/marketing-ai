@@ -76,3 +76,43 @@ class TriggerMatchStatus(str, enum.Enum):
     DISPATCHED = "dispatched"
     IGNORED = "ignored"
     FAILED = "failed"
+
+
+class LeadStage(str, enum.Enum):
+    """CRM relationship stage of an influencer or prospect."""
+
+    DISCOVERED = "discovered"
+    QUALIFIED = "qualified"
+    CONTACTED = "contacted"
+    REPLIED = "replied"
+    CONVERTED = "converted"
+    UNRESPONSIVE = "unresponsive"
+    DO_NOT_CONTACT = "do_not_contact"
+
+
+class LeadTier(str, enum.Enum):
+    """Audience sizing categorization."""
+
+    NANO = "nano"        # 1k - 10k
+    MICRO = "micro"      # 10k - 50k
+    MID = "mid"          # 50k - 200k
+    MACRO = "macro"      # 200k - 1M
+    MEGA = "mega"        # 1M+
+
+
+class OutreachChannel(str, enum.Enum):
+    """Medium used for cold outreach message delivery."""
+
+    DM = "dm"
+    EMAIL = "email"
+
+
+class OutreachMessageStatus(str, enum.Enum):
+    """Human-in-the-loop cold DM delivery state machine."""
+
+    DRAFT = "draft"
+    STAGED = "staged"            # Waiting for human review
+    APPROVED = "approved"        # Human approved for dispatch
+    REJECTED = "rejected"        # Dismissed by human
+    DISPATCHED = "dispatched"    # Delivered by platform adapter
+    FAILED = "failed"
