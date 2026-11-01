@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_v1_router
+from app.automation.scheduler import start_scheduler, stop_scheduler
 from app.core.config import settings
 from app.core.error_handlers import register_exception_handlers
 from app.core.logging import get_logger
@@ -15,8 +16,12 @@ logger = get_logger(__name__)
 async def lifespan(app: FastAPI):
     """Lifecycle events for app startup and shutdown."""
     logger.info("Initializing Marketing AI Agent backend...")
+    # Start APScheduler background engine
+    start_scheduler()
     yield
     logger.info("Shutting down Marketing AI Agent backend...")
+    # Gracefully stop APScheduler background engine
+    stop_scheduler()
 
 
 app = FastAPI(
@@ -24,7 +29,7 @@ app = FastAPI(
     description="Offline-first autonomous marketing agent and social CRM",
     version="0.1.0",
     lifespan=lifespan,
-    debug=getattr(settings, "DEBUG", False),
+    debug=settings.DEBUG,
 )
 
 # 1. Register Centralized Exception Handlers
