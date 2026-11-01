@@ -3,10 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.v1.router import api_v1_router
 from app.core.config import settings
 from app.core.error_handlers import register_exception_handlers
 from app.core.logging import get_logger
-from app.modules.accounts.router import router as accounts_router
 
 logger = get_logger(__name__)
 
@@ -30,7 +30,7 @@ app = FastAPI(
 # 1. Register Centralized Exception Handlers
 register_exception_handlers(app)
 
-# 2. CORS Middleware (allows Vite dev server on port 5173 to reach the API)
+# 2. CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -42,15 +42,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # 3. Healthcheck Endpoint
 @app.get("/health", tags=["System"])
 def healthcheck():
     return {"status": "ok", "app": "marketing-ai"}
 
 
-# 4. Mount Domain Routers
+# 4. Mount API v1 Aggregated Gateway
 app.include_router(
-    accounts_router,
-    prefix="/api/v1/accounts",
-    tags=["Accounts"],
+    api_v1_router,
+    prefix="/api/v1",
 )
