@@ -1,8 +1,12 @@
+from collections.abc import AsyncGenerator
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, status
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from app.agent.loop import run_agent_turn, stream_agent_turn
 from app.db.dependencies import get_db_session
 from app.modules.copilot.schemas import (
     ChatMessageCreateRequest,
@@ -21,6 +25,18 @@ router = APIRouter()
 def get_copilot_service(db: Session = Depends(get_db_session)) -> CopilotService:
     """Dependency injection factory for CopilotService."""
     return CopilotService(db)
+
+
+class AgentChatRequest(BaseModel):
+    """Payload accepted by POST /api/v1/copilot/sessions/{session_id}/chat"""
+
+    content: str = Field(..., min_length=1, max_length=20000)
+    model_override: str | None = None
+
+
+# =============================================================================
+# Chat Session Endpoints
+# =============================================================================
 
 
 @router.post(
@@ -94,6 +110,11 @@ def delete_session(
     service.delete_session(session_id)
 
 
+# =============================================================================
+# Chat Messages & Tool Trace Endpoints
+# =============================================================================
+
+
 @router.post(
     "/sessions/{session_id}/messages",
     response_model=ChatMessageResponse,
@@ -137,3 +158,52 @@ def list_tool_executions(
 ) -> list[ToolExecutionLogResponse]:
     tool_logs = service.list_tool_executions(session_id=session_id)
     return [ToolExecutionLogResponse.model_validate(trace) for trace in tool_logs]
+
+
+# =============================================================================
+# Interactive AI Agent Execution & Streaming Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/sessions/{session_id}/chat",
+    response_model=ChatMessageResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Send a prompt to the AI Copilot and receive the completed reply",
+)
+async def chat_with_agent(
+    session_id: UUID,
+    payload: AgentChatRequest,
+    db: Session = Depends(get_db_session),
+) -> ChatMessageResponse:
+    assistant_msg = await run_agent_turn(
+        db=db,
+        session_id=session_id,
+        user_prompt=payload.content,
+        model_override=payload.model_override,
+    )
+    return ChatMessageResponse.model_validate(assistant_msg)
+
+
+@router.post(
+    "/sessions/{session_id}/stream",
+    summary="Stream AI Copilot response tokens in real time via SSE",
+)
+async def stream_chat_with_agent(
+    session_id: UUID,
+    payload: AgentChatRequest,
+    db: Session = Depends(get_db_session),
+) -> StreamingResponse:
+    token_generator = stream_agent_turn(
+        db=db,
+        session_id=session_id,
+        user_prompt=payload.content,
+        model_override=payload.model_override,
+    )
+
+    async def event_generator() -> AsyncGenerator[str, None]:
+        async for token in token_generator:
+            yield f"data: {token}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
