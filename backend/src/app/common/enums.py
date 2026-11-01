@@ -57,3 +57,22 @@ class PostContentType(str, enum.Enum):
     VIDEO = "video"
     CAROUSEL = "carousel"
     THREAD = "thread"
+
+
+class TriggerActionType(str, enum.Enum):
+    """Action executed when an incoming post matches a trigger rule."""
+
+    AUTO_REPLY = "auto_reply"
+    STAGE_DRAFT = "stage_draft"
+    NOTIFY_ONLY = "notify_only"
+    DISPATCH_DM = "dispatch_dm"
+
+
+class TriggerMatchStatus(str, enum.Enum):
+    """Lifecycle state of an intercepted conversation or tweet."""
+
+    PENDING_REVIEW = "pending_review"
+    APPROVED = "approved"
+    DISPATCHED = "dispatched"
+    IGNORED = "ignored"
+    FAILED = "failed"

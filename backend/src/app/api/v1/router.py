@@ -2,10 +2,10 @@ from fastapi import APIRouter
 
 from app.modules.accounts.router import router as accounts_router
 from app.modules.campaigns.router import router as campaigns_router
+from app.modules.triggers.router import router as triggers_router
 
 api_v1_router = APIRouter()
 
-# Register Domain Routers
 api_v1_router.include_router(
     accounts_router,
     prefix="/accounts",
@@ -16,4 +16,10 @@ api_v1_router.include_router(
     campaigns_router,
     prefix="/campaigns",
     tags=["Campaigns"],
+)
+
+api_v1_router.include_router(
+    triggers_router,
+    prefix="/triggers",
+    tags=["Triggers"],
 )
