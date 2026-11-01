@@ -130,32 +130,44 @@ class ActivitySeverity(str, enum.Enum):
 class ActivityType(str, enum.Enum):
     """Domain events tracked in the unified audit trail."""
 
-    # Accounts
     ACCOUNT_CONNECTED = "account_connected"
     ACCOUNT_COOLDOWN_TRIGGERED = "account_cooldown_triggered"
     ACCOUNT_UPDATED = "account_updated"
     ACCOUNT_DELETED = "account_deleted"
 
-    # Campaigns & Posts
     CAMPAIGN_CREATED = "campaign_created"
     POST_SCHEDULED = "post_scheduled"
     POST_PUBLISHED = "post_published"
     POST_FAILED = "post_failed"
     POST_CANCELLED = "post_cancelled"
 
-    # Triggers & Monitoring
     TRIGGER_MATCHED = "trigger_matched"
     TRIGGER_APPROVED = "trigger_approved"
     TRIGGER_IGNORED = "trigger_ignored"
 
-    # Outreach CRM
     LEAD_IMPORTED = "lead_imported"
     MESSAGE_STAGED = "message_staged"
     MESSAGE_APPROVED = "message_approved"
     MESSAGE_REJECTED = "message_rejected"
     MESSAGE_DISPATCHED = "message_dispatched"
 
-    # System & Automation
     SYSTEM_REPLICA_SYNCED = "system_replica_synced"
     SYSTEM_QUOTA_RESET = "system_quota_reset"
     AGENT_TOOL_EXECUTED = "agent_tool_executed"
+
+
+class ChatRole(str, enum.Enum):
+    """Message sender role in agent conversations."""
+
+    USER = "user"
+    ASSISTANT = "assistant"
+    SYSTEM = "system"
+    TOOL = "tool"
+
+
+class ToolExecutionStatus(str, enum.Enum):
+    """Execution status of a tool invoked by the LLM."""
+
+    PENDING = "pending"
+    SUCCESS = "success"
+    ERROR = "error"
