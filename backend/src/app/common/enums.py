@@ -93,11 +93,11 @@ class LeadStage(str, enum.Enum):
 class LeadTier(str, enum.Enum):
     """Audience sizing categorization."""
 
-    NANO = "nano"        # 1k - 10k
-    MICRO = "micro"      # 10k - 50k
-    MID = "mid"          # 50k - 200k
-    MACRO = "macro"      # 200k - 1M
-    MEGA = "mega"        # 1M+
+    NANO = "nano"
+    MICRO = "micro"
+    MID = "mid"
+    MACRO = "macro"
+    MEGA = "mega"
 
 
 class OutreachChannel(str, enum.Enum):
@@ -111,8 +111,51 @@ class OutreachMessageStatus(str, enum.Enum):
     """Human-in-the-loop cold DM delivery state machine."""
 
     DRAFT = "draft"
-    STAGED = "staged"            # Waiting for human review
-    APPROVED = "approved"        # Human approved for dispatch
-    REJECTED = "rejected"        # Dismissed by human
-    DISPATCHED = "dispatched"    # Delivered by platform adapter
+    STAGED = "staged"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    DISPATCHED = "dispatched"
     FAILED = "failed"
+
+
+class ActivitySeverity(str, enum.Enum):
+    """Severity classification for audit trail logs."""
+
+    INFO = "info"
+    SUCCESS = "success"
+    WARNING = "warning"
+    ERROR = "error"
+
+
+class ActivityType(str, enum.Enum):
+    """Domain events tracked in the unified audit trail."""
+
+    # Accounts
+    ACCOUNT_CONNECTED = "account_connected"
+    ACCOUNT_COOLDOWN_TRIGGERED = "account_cooldown_triggered"
+    ACCOUNT_UPDATED = "account_updated"
+    ACCOUNT_DELETED = "account_deleted"
+
+    # Campaigns & Posts
+    CAMPAIGN_CREATED = "campaign_created"
+    POST_SCHEDULED = "post_scheduled"
+    POST_PUBLISHED = "post_published"
+    POST_FAILED = "post_failed"
+    POST_CANCELLED = "post_cancelled"
+
+    # Triggers & Monitoring
+    TRIGGER_MATCHED = "trigger_matched"
+    TRIGGER_APPROVED = "trigger_approved"
+    TRIGGER_IGNORED = "trigger_ignored"
+
+    # Outreach CRM
+    LEAD_IMPORTED = "lead_imported"
+    MESSAGE_STAGED = "message_staged"
+    MESSAGE_APPROVED = "message_approved"
+    MESSAGE_REJECTED = "message_rejected"
+    MESSAGE_DISPATCHED = "message_dispatched"
+
+    # System & Automation
+    SYSTEM_REPLICA_SYNCED = "system_replica_synced"
+    SYSTEM_QUOTA_RESET = "system_quota_reset"
+    AGENT_TOOL_EXECUTED = "agent_tool_executed"
